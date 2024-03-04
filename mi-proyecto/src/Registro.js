@@ -13,15 +13,37 @@ const Formulario = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Aquí puedes enviar los datos a un servidor o hacer lo que necesites con ellos
+  
+    try {
+      const response = await fetch('../server/insertar.php', {  // Ruta al archivo PHP en el servidor
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos');
+      }
+  
+      // Limpiar el formulario después de enviar los datos
+      setFormData({
+        username: '',
+        password: ''
+      });
+  
+      console.log('Datos enviados con éxito');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
     <div>
-      <h2>Formulario de Inicio de Sesión</h2>
+      <h2>Formulario de Registro</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Nombre de Usuario:</label>
@@ -43,7 +65,7 @@ const Formulario = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Iniciar Sesión</button>
+        <button type="submit">Registrar</button>
       </form>
     </div>
   );
