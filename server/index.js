@@ -234,13 +234,54 @@ app.post("/creargrupo", upload.single('file'), (req, resp) => {
 });
 
 
+
+
+
+
+app.post("/vergrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const nomb = req.query.nomb;
+    console.log("Usuario:", nomb);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [nomb], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+
+        console.log("Usuario:", usuarioID);
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("SELECT * FROM Grupo WHERE UsuarioCreador_ID = ?", [usuarioID], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    });
+});
+
+
 //---------
 
 app.post("/imagenusuario",
 (req, resp)=>{
     //const nomb = req.body.nomb;
     const nomb = req.query.nomb;
-    console.log("Usuario:", nomb);
+    //console.log("Usuario:", nomb);
 
 
     db.query("SELECT * FROM usuarios WHERE nomU=? ",
