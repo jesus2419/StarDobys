@@ -66,6 +66,24 @@ function Registro(){
     
     }
 
+    
+ function mostrarImagen(event) {
+  const input = event.target;
+  const imgMostrada = document.getElementById('imagenMostrada');
+ 
+   // Asegúrate de que se haya seleccionado un archivo
+   if (input.files && input.files[0]) {
+    const reader = new FileReader();
+ 
+   reader.onload = function(e) {
+     imgMostrada.src = e.target.result;
+     imgMostrada.style.display = 'block';  // Muestra la imagen
+   };
+ 
+    reader.readAsDataURL(input.files[0]);  // Lee el archivo como una URL de datos
+   }
+   }
+
   return(
     <div className="fondo-gris"> 
 
@@ -95,8 +113,26 @@ function Registro(){
           onChange={(e)=>{setPass(e.target.value)}} />
 
         <label>Archivo</label>
-            <input type="file" 
-            onChange={(e)=>{setArchivo(e.target.files[0])}} />
+        <input 
+    type="file"  
+    class="form-control" 
+    id="imagen" 
+    name="imagen" 
+    accept="image/*"
+    onChange={(e) => {
+        setArchivo(e.target.files[0]); // Primera acción: Actualizar el estado con el archivo seleccionado
+        mostrarImagen(e); // Segunda acción: Llamar a la función mostrarImagen con el evento e
+    }} 
+/>
+
+
+<img id="imagenMostrada" src="#" alt="Vista previa de la imagen" style="display: none; max-width: 100%; height: auto;">
+</img>
+
+  {
+}
+
+
 
         <button className="btn btn-primary" onClick={sendDatos}>Registrar</button>
 

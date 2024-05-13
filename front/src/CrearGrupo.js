@@ -83,12 +83,31 @@ useEffect(()=>{
 
                                     <div className="mb-3">
                                         <label htmlFor="categoriaGrupo" className="form-label">Categoría del Grupo</label>
+                                        
+                        
+                                        <select className="form-select" id="categoriaGrupo" name="categoriaGrupo" required>
+                                        {
+                                            allImg.map((val,key)=>{
+                                                return(
+                                                    <>
+                                                    <option value= {val.ID}>{val.Nombre}</option>
+
+                                                   
+                                                    
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                         </select>
+                                        {/*
                                         <select className="form-select" id="categoriaGrupo" name="categoriaGrupo" required>
                                             <option value="rock">Rock</option>
                                             <option value="kpop">Kpop</option>
                                             <option value="jazz">Jazz</option>
                                             <option value="electronica">Electronica</option>
                                         </select>
+
+                                        */}
                                     </div>
 
                                     <div className="mb-3">
