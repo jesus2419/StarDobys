@@ -1,0 +1,32 @@
+/* Estilos para la barra lateral y contenido principal de CrearGrupo.js */
+
+#sidebar {
+    height: 100vh;  /* Altura completa de la pantalla */
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+#sidebar img {
+    width: 100%;
+}
+
+.bg-purple {
+    background-color: #800080;  /* Código de color morado */
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+.icon {
+    width: 50px;
+    height: 90px;
+    margin-right: 20px;
+}

@@ -1,0 +1,42 @@
+#sidebar {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+#sidebar img {
+    width: 100%;
+}
+
+.bg-purple {
+    background-color: #800080;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+.icon {
+    width: 50px;
+    height: 90px;
+    margin-right: 20px;
+}
+
+.card {
+    width: 70%; /* Cambiamos el ancho de la tarjeta */
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-body {
+    padding: 15px;
+}

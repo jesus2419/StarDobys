@@ -1,0 +1,11 @@
+.navbar-text {
+    margin-right: 40px;
+}
+
+.form-inline .input-group {
+    width: auto;
+}
+
+.input-group-append {
+    margin-left: -1px;
+}
