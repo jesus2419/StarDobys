@@ -36,7 +36,7 @@ function Perfil() {
                 }
     
                 // Segunda petición para obtener otro conjunto de datos  
-                const otraRespuesta = await Axios.get(`http://localhost:3001/vergrupo?nomb=${encodeURIComponent(sesion)}`);
+                const otraRespuesta = await Axios.post(`http://localhost:3001/vergrupo?nomb=${encodeURIComponent(sesion)}`);
                 // Verificar si los datos están presentes en otraRespuesta
 
                 if (otraRespuesta.data === "No grupo") {

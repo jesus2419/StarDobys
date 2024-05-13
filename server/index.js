@@ -281,7 +281,7 @@ app.post("/imagenusuario",
 (req, resp)=>{
     //const nomb = req.body.nomb;
     const nomb = req.query.nomb;
-    //console.log("Usuario:", nomb);
+    console.log("Usuario:", nomb);
 
 
     db.query("SELECT * FROM usuarios WHERE nomU=? ",
