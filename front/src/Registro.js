@@ -118,16 +118,19 @@ function Registro(){
     class="form-control" 
     id="imagen" 
     name="imagen" 
-    accept="image/*"
+    accept="image/png"
     onChange={(e) => {
         setArchivo(e.target.files[0]); // Primera acción: Actualizar el estado con el archivo seleccionado
         mostrarImagen(e); // Segunda acción: Llamar a la función mostrarImagen con el evento e
     }} 
 />
 
-
-<img id="imagenMostrada" src="#" alt="Vista previa de la imagen" style="display: none; max-width: 100%; height: auto;">
-</img>
+<img 
+    id="imagenMostrada" 
+    src="#" 
+    alt="Vista previa de la imagen" 
+    style={{ display: 'none', maxWidth: '100%', height: 'auto' }} 
+/>
 
   {
 }

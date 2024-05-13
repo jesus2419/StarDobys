@@ -77,6 +77,7 @@ useEffect(()=>{
                         </div>
                     </nav>
                     {/* Contenido principal */}
+                    
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <h3  className="mt-3">Perfil</h3>
                         <div className="container mt-5">
@@ -111,38 +112,35 @@ useEffect(()=>{
                         </div>
 
                     </main>
-                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <h3  className="mt-3">Grupos</h3>
-                        <div className="container mt-5">
-                            <div className="row justify-content-center">
-                                <div className="col-md-3">
-                                    <div className="card">
-                                        <div className="card-body text-center">
-                                        {
-                                            allImg.map((val,key)=>{
-                                                return(
-                                                    <>
-                                                    <img src={'data:image/jpeg;base64,'+val.base64} 
-                                                    alt="Foto de Perfil" className="img-thumbnail" />
-                                                
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                            {/*<img src="./assets/img/sloth.png" alt="Foto de Perfil" className="img-thumbnail" />*/}
-                                            
-                                            <h3 className="mt-3">@{sesion}</h3>
-                                            <Link to="/ModificarPerfil" className="btn btn-primary btn-block">Configuración</Link>
-                                            <Link to="/Inicio" className="btn btn-danger btn-block">Cerrar Sesión</Link>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                               
-                                    {/* Aquí va el contenido del perfil */}
-                                </div>
+                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
+                   
+                    <h3  className="mt-3">Grupos</h3>
+               </main>
+                   
+                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
+                   
+                        <div className="card mt-4">
+                        {
+                            allImg.map((val,key)=>{
+                                return(
+                                    <>
+                                    <img src={'data:image/jpeg;base64,'+val.base64} 
+                                    className="card-img-top" alt={sesion} />
+                                  
+                                    </>
+                                )
+                            })
+                        }
+                        {/*
+                            <img src={'data:image/jpeg;base64,'+val.base64}  className="card-img-top" alt="..." />
+                    */}<div className="card-body">
+                            <span className="navbar-text">{sesion}</span>
+                                <h5 className="card-title">Título de la publicación</h5>
+                                <p className="card-text">Descripción de la publicación. Aquí puedes escribir más detalles sobre la publicación.</p>
                             </div>
                         </div>
+
+
                     </main>
                 </div>
             </div>

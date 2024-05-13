@@ -198,6 +198,42 @@ app.post("/usuario", upload.single('file'),
     console.log(imagenB64, usName );
 })
 
+
+app.post("/creargrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const nomb = req.query.nomb;
+    console.log("Usuario:", nomb);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [nomb], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+        // Convertir la imagen a base64
+        const imagenB64 = req.file.buffer.toString('base64');
+        const descripcion = req.body.descripcion;
+        const categoria = req.body.Categoria;
+        const nombre = req.body.Nomb;
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL InsertarGrupo(?, ?, ?, ?, ?)", [nombre, categoria, usuarioID, descripcion, imagenB64], (err, data) => {
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    });
+});
+
+
 //---------
 
 app.post("/imagenusuario",
