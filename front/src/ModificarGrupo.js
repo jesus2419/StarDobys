@@ -18,7 +18,11 @@ function ModificarGrupo() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const sesion = JSON.parse(localStorage.getItem('sesion'))
+    const sesion = JSON.parse(localStorage.getItem('sesion'));
+
+
+    // Definir estado para los valores del grupo
+    const [valores, setValores] = useState([]);
 
     const[allImg, setAllmg] = useState([]);
     const [otrosDatos, setOtrosDatos] = useState([]);
@@ -67,7 +71,13 @@ function ModificarGrupo() {
         fetchData();
     }, []); // El segundo parámetro [] asegura que el efecto se ejecute solo una vez al montar el componente
     
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setValores({
+            ...valores,
+            [name]: value
+        });
+    };
 
 const submit = (e) =>{
     e.preventDefault();
@@ -80,7 +90,7 @@ const submit = (e) =>{
     frmData.append("Nomb", Nomb);
 
 
-    Axios.post(`http://localhost:3001/creargrupo?nomb=${encodeURIComponent(sesion)}`,
+    Axios.post(`http://localhost:3001/updategrupo?nomb=${encodeURIComponent(id)}`,
     frmData,
     {
         headers: {'Content-Type': 'multipart/form-data'}
@@ -162,6 +172,9 @@ function mostrarImagen(event) {
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     { //ID, Categoria_ID, NombreGrupo, NombreCategoria, NombreUsuarioCreador, Fotousuario, Descripción, Fecha_de_creación, Foto, Estado
                     otrosDatos.map((val, key) => {
+
+                       
+
                          return (
                         <div className="container d-flex justify-content-center"  key={key}>
                             <div className="card p-4" style={{ width: '600px' }}>
@@ -169,15 +182,18 @@ function mostrarImagen(event) {
 
                                 <form enctype="multipart/form-data">
                                     <div className="mb-3">
-                                        <label htmlFor="nombreGrupo" className="form-label">Nombre del Grupo</label>
-                                        <input type="text" className="form-control" id="nombreGrupo" name="nombreGrupo" value={val.NombreGrupo} required onChange={(e)=>{setNom(e.target.value)}}/>
+                                        <label htmlFor="nombreGrupo" className="form-label">Nombre Actual del Grupo</label>
+                                        <input type="text" className="form-control" id="nombreGrupo" name="nombreGrupo" value={val.NombreGrupo} readonly required />
+
+                                        <label htmlFor="nombreGrupo" className="form-label">Nombre Nuevo del Grupo</label>
+                                        <input type="text" className="form-control" id="nombreGrupo" name="nombreGrupo" required onChange={(e)=>{setNom(e.target.value)}}/>
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="categoriaGrupo" className="form-label">Categoría del Grupo</label>
+                                        <label htmlFor="categoriaGrupo" className="form-label">Categoría Actual del Grupo</label>
                                         
                         
-                                        <select className="form-select" id="categoriaGrupo" name="categoriaGrupo" value={val.Categoria_ID} required onChange={(e)=>{setCategoria(e.target.value)}}>
+                                        <select className="form-select" id="categoriaGrupo" name="categoriaGrupo" value={val.Categoria_ID}  required >
                                         {
                                             allImg.map((val,key)=>{
                                                 return(
@@ -191,27 +207,43 @@ function mostrarImagen(event) {
                                             })
                                         }
                                          </select>
-                                        {/*
-                                        <select className="form-select" id="categoriaGrupo" name="categoriaGrupo" required>
-                                            <option value="rock">Rock</option>
-                                            <option value="kpop">Kpop</option>
-                                            <option value="jazz">Jazz</option>
-                                            <option value="electronica">Electronica</option>
-                                        </select>
-
-                                        */}
+                                        
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="descripcionGrupo" className="form-label">Descripción del Grupo</label>
-                                        <textarea className="form-control" id="descripcionGrupo" name="descripcionGrupo" rows="3" value={val.Descripción} required onChange={(e)=>{setdescripcion(e.target.value)}}></textarea>
+                                        <label htmlFor="categoriaGrupo" className="form-label">Categoría Nueva del Grupo</label>
+                                        
+                        
+                                        <select className="form-select" id="categoriaGrupo" name="categoriaGrupo"   required onChange={(e)=>{setCategoria(e.target.value)}}>
+                                        {
+                                            allImg.map((val,key)=>{
+                                                return(
+                                                    <>
+                                                    <option value= {val.ID}>{val.Nombre}</option>
+
+                                                   
+                                                    
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                         </select>
+                                        
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="descripcionGrupo" className="form-label">Descripción Actual del Grupo</label>
+                                        <textarea className="form-control" id="descripcionGrupo" name="descripcionGrupo" rows="3" value={val.Descripción} required></textarea>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="descripcionGrupo" className="form-label">Descripción Nueva del Grupo</label>
+                                        <textarea className="form-control" id="descripcionGrupo" name="descripcionGrupo" rows="3" required onChange={(e)=>{setdescripcion(e.target.value)}}></textarea>
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="imagenGrupo" className="form-label">Seleccionar Archivo de Imagen</label>
-                                      {/*
-                                        <input type="file" className="form-control" id="imagenGrupo" name="imagenGrupo" accept="image/png" required onChange={(e)=>{setArchivo(e.target.value)}}/>
-                                    */}
+                                
                                      <input 
                                         type="file"  
                                         class="form-control" 
@@ -230,6 +262,11 @@ function mostrarImagen(event) {
                                         alt="Vista previa de la imagen" 
                                         style={{ display: 'none', maxWidth: '100%', height: 'auto' }} 
                                     />
+
+
+                                            <label htmlFor="imagenGrupo" className="form-label">Foto anterior</label>
+                                                <img src={'data:image/jpeg;base64,'+val.Foto} 
+                                                    alt="Foto de Perfil" className="img-thumbnail" />
 
 
                                     </div>

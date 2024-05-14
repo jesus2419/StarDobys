@@ -41,6 +41,7 @@ DELIMITER ;
 
  SELECT 
         Grupo.ID,
+        Grupo.Categoria_ID,
         Grupo.Nombre AS NombreGrupo,
         Categoria.Nombre AS NombreCategoria,
         Usuarios.nomU AS NombreUsuarioCreador,

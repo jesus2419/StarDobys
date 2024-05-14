@@ -274,6 +274,36 @@ app.post("/creargrupo", upload.single('file'), (req, resp) => {
 
 
 
+app.post("/updategrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const id = req.query.nomb;
+    console.log("grupo:", id);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+
+        // Convertir la imagen a base64
+        const imagenB64 = req.file.buffer.toString('base64');
+        const descripcion = req.body.descripcion;
+        const categoria = req.body.Categoria;
+        const nombre = req.body.Nomb;
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL UpdateGrupo(?, ?, ?, ?, ?)", [id, nombre, categoria, descripcion, imagenB64], (err, data) => {
+
+
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    
+});
+
+
+
 
 
 
