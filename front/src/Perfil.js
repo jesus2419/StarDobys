@@ -132,7 +132,7 @@ function Perfil() {
                     </main>
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
                    
-                     <h3  className="mt-3">Grupos</h3>
+                     <h3  className="mt-3">Grupos creados</h3>
                </main>
                    
                <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">

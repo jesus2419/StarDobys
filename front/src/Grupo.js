@@ -44,19 +44,20 @@ function Grupo() {
                     setAllmg(imagenResponse.data);
                 }
 
-                /*
+                
     
                 // Segunda petición para obtener otro conjunto de datos  
-                const otraRespuesta = await Axios.post(`http://localhost:3001/vergrupo?nomb=${encodeURIComponent(sesion)}`);
+                const otraRespuesta = await Axios.post(`http://localhost:3001/usuarioadmin?sesion=${encodeURIComponent(sesion)}&id=${id}`);
+
                 // Verificar si los datos están presentes en otraRespuesta
 
                 if (otraRespuesta.data === "No grupo") {
-                    alert("No hay grupo en el usuario");
+                   // alert("No hay grupo en el usuario");
                 } else {
                     setOtrosDatos(otraRespuesta.data);
                 }
 
-                */
+                
                 
             } catch (error) {
                 console.error("Error al realizar la solicitud:", error);
@@ -141,12 +142,30 @@ function Grupo() {
                                                         <span>Descripción:</span>
                                                         <h3>{val.Descripción}</h3>
                                                     </div>
+                                                   
                                                     <div className="group-buttons">
-                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Ver Solicitudes</button>
-                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Editar</button>
-                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
-                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
-                                                    </div>
+                                                    {
+                                                        otrosDatos.length > 0 ? (
+                                                            otrosDatos.map((val, key2) => (
+                                                                <div key={key2} >
+                                                                    <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Ver Solicitudes</button>
+
+                                                                    <Link to={`/ModificarGrupo?id=${id}`}>
+                                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Editar</button>
+                                                                    </Link>
+                                                                    <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
+                                                                    <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                                                </div>
+                                                            ))
+                                                        ) : (
+                                                            <div >
+                                                                <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
+                                                                <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                                            </div>
+                                                        )
+                                                    }
+                                                        
+                                                    </div> 
                                                 </div>
                                             )
                                         })}

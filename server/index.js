@@ -151,6 +151,42 @@ app.post("/file", upload.single('file'),
     console.log(imagenB64, usName );
 })
 
+app.get("/getgrupos",
+(req, resp)=>{
+    db.query(`
+    SELECT 
+        Grupo.ID,
+        Grupo.Nombre AS NombreGrupo,
+        Categoria.Nombre AS NombreCategoria,
+        Usuarios.nomU AS NombreUsuarioCreador,
+        Grupo.Descripción,
+        Grupo.Fecha_de_creación,
+        Grupo.Foto,
+        Grupo.Estado
+    FROM 
+        Grupo
+    JOIN
+        Categoria ON Grupo.Categoria_ID = Categoria.ID
+    JOIN
+        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID;
+`,
+    (error, data)=>{
+        if(error){
+            resp.send(error);
+        }else{
+            if(data.length > 0){
+                resp.json(data);
+            }else{
+                resp.json('No imagen');
+            }
+        }
+    })
+})
+
+
+
+
+
 app.get("/getAllImg",
 (req, resp)=>{
     db.query("SELECT * FROM imagen",
@@ -186,8 +222,10 @@ app.post("/usuario", upload.single('file'),
     [usName, imagenB64, email, pass, Nomb],
     (err, data)=>{
         if(err){
+            console.log(err);
             resp.json({
                 "alert": 'Error'
+                
             })
         }else{
             resp.json({
@@ -276,6 +314,50 @@ app.post("/vergrupo", upload.single('file'), (req, resp) => {
 });
 
 
+
+app.post("/usuarioadmin", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+
+        console.log("Usuario:", usuarioID);
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("SELECT * FROM Grupo WHERE UsuarioCreador_ID = ? AND ID = ?", [usuarioID, id], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    });
+});
+
+
+
+
+
+
 app.post("/grupopag", upload.single('file'), (req, resp) => {
     console.log("Datos recibidos del cliente:");
     const id_grupo = req.query.nomb;
@@ -292,6 +374,53 @@ app.post("/grupopag", upload.single('file'), (req, resp) => {
     SELECT 
         Grupo.ID,
         Grupo.Nombre AS NombreGrupo,
+        Categoria.Nombre AS NombreCategoria,
+        Usuarios.nomU AS NombreUsuarioCreador,
+        Usuarios.base64 AS Fotousuario,
+        Grupo.Descripción,
+        Grupo.Fecha_de_creación,
+        Grupo.Foto,
+        Grupo.Estado
+    FROM 
+        Grupo
+    JOIN
+        Categoria ON Grupo.Categoria_ID = Categoria.ID
+    JOIN
+        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID
+    WHERE
+        Grupo.ID = ?;
+`, [id_grupo], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+   
+});
+
+
+app.post("/modgrupoinfo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const id_grupo = req.query.sesion;
+    console.log("grupo:", id_grupo);
+
+    
+
+       
+
+
+       
+       
+    db.query(`
+    SELECT 
+        Grupo.ID,
+        Grupo.Nombre AS NombreGrupo,
+        Grupo.Categoria_ID,
         Categoria.Nombre AS NombreCategoria,
         Usuarios.nomU AS NombreUsuarioCreador,
         Usuarios.base64 AS Fotousuario,

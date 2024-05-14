@@ -27,7 +27,7 @@ useEffect(()=>{
     const frmData = new FormData();
     frmData.append("nomb", sesion);
 
-    Axios.post(`http://localhost:3001/imagenusuario?nomb=${encodeURIComponent(sesion)}`)
+    Axios.get("http://localhost:3001/getgrupos")
     .then((data)=>{
         if(data.data === "No imagen"){
             alert("No hay imagen en el usuario");
@@ -78,30 +78,34 @@ useEffect(()=>{
                         </div>
                     </nav>
                     {/* Contenido principal */}
+                    
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
-                        <div className="card mt-4">
-                        {
-                            allImg.map((val,key)=>{
-                                return(
-                                    <>
-                                    <img src={'data:image/jpeg;base64,'+val.base64} 
-                                    className="card-img-top" alt={sesion} />
-                                  
-                                    </>
-                                )
-                            })
-                        }
+
+                    
+
+                    {
+                    //ID, NombreGrupo, NombreCategoria, NombreUsuarioCreador, Fotousuario, Descripción, Fecha_de_creación, Foto, Estado
+                    allImg.map((val,key)=>{
+                        return (
+                            <div className="card-container" key={key}>
+                                <div className="card mt-4">
+                                    <Link to={`/Grupo?id=${val.ID}`} className="card-link">
+                                        <img src={'data:image/jpeg;base64,' + val.Foto} className="card-img-top" alt={val.NombreGrupo} />
+                                        <div className="card-body">
+                                            <span className="navbar-text">Categoría: {val.NombreCategoria}</span>
+                                            <h5 className="card-title">{val.NombreGrupo}</h5>
+                                            <p className="card-text">{val.Descripción}</p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </main>
+                    
                         {/*
                             <img src={'data:image/jpeg;base64,'+val.base64}  className="card-img-top" alt="..." />
-                    */}<div className="card-body">
-                            <span className="navbar-text">{sesion}</span>
-                                <h5 className="card-title">Título de la publicación</h5>
-                                <p className="card-text">Descripción de la publicación. Aquí puedes escribir más detalles sobre la publicación.</p>
-                            </div>
-                        </div>
-
-                        
-                    </main>
+                    */}
                 </div>
             </div>
         </>
