@@ -143,7 +143,8 @@ function Perfil() {
                                 return(
                                     <>
                                     
-                                    <div className="card mt-4">
+                                    <div className="card mt-4"  key={key}>
+                                    <Link to={`/Grupo?id=${val.ID}`} className="card-link">
                                     <img src={'data:image/jpeg;base64,'+val.Foto} 
                                     className="card-img-top" alt={val.Nombre} />
 
@@ -152,6 +153,7 @@ function Perfil() {
                                                 <h5 className="card-title">{val.Nombre}</h5>
                                                 <p className="card-text">{val.Descripción}</p>
                                         </div>
+                                        </Link>
                                     </div>
                                   
                                     </>

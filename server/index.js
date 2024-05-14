@@ -275,6 +275,33 @@ app.post("/vergrupo", upload.single('file'), (req, resp) => {
 });
 
 
+app.post("/grupopag", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const id_grupo = req.query.nomb;
+    console.log("grupo:", id_grupo);
+
+    
+
+       
+
+
+       
+       
+        db.query("SELECT * FROM grupo WHERE ID = ?", [id_grupo], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+   
+});
+
+
 //---------
 
 app.post("/imagenusuario",

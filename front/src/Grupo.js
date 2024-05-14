@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
 import './Usuarios.css';
@@ -13,8 +13,62 @@ import agregarGrupoIcon from './assets/img/mas.png';
 import slothIcon from './assets/img/sloth.png';
 import videoIcon from './assets/img/video.png';
 import imagenIcon from './assets/img/imagen.png';
+import { useLocation } from 'react-router-dom';
+import './Grupo.css';  // Importar el archivo CSS personalizado
+
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function Grupo() {
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get('id');
+
+    
+    const sesion = JSON.parse(localStorage.getItem('sesion'))
+
+    const[allImg, setAllmg] = useState([]);
+    const [otrosDatos, setOtrosDatos] = useState([]);
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Primera petición para obtener la imagen del usuario
+                const imagenResponse = await Axios.post(`http://localhost:3001/grupopag?nomb=${encodeURIComponent(id)}`);
+                if (imagenResponse.data === "No grupo") {
+                    alert("No hay imagen en el usuario");
+                } else {
+                    setAllmg(imagenResponse.data);
+                }
+
+                /*
+    
+                // Segunda petición para obtener otro conjunto de datos  
+                const otraRespuesta = await Axios.post(`http://localhost:3001/vergrupo?nomb=${encodeURIComponent(sesion)}`);
+                // Verificar si los datos están presentes en otraRespuesta
+
+                if (otraRespuesta.data === "No grupo") {
+                    alert("No hay grupo en el usuario");
+                } else {
+                    setOtrosDatos(otraRespuesta.data);
+                }
+
+                */
+                
+            } catch (error) {
+                console.error("Error al realizar la solicitud:", error);
+            }
+        };
+    
+        // Llamar a la función fetchData para iniciar las peticiones al montar el componente
+        fetchData();
+    }, []); // El segundo parámetro [] asegura que el efecto se ejecute solo una vez al montar el componente
+    
+
+
     return (
         <>
             <Header /> {/* Añadir el componente Header */}
@@ -58,13 +112,34 @@ function Grupo() {
                         <div className="main-content">
                             <div className="post-section">
                                 <div className="post-input">
-                                    <div className="user-profile">
-                                        <img src={slothIcon} alt="Foto de perfil" />
-                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Ver Solicitudes</button>
-                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Editar</button>
-                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
-                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                <div className="user-profile">
+                                        {allImg.map((val,key)=>{
+                                            return(
+                                                <div key={key} className="group-container">
+                                                    <div className="group-info">
+                                                        <h1>{val.Nombre}</h1>
+                                                        <h4>Categoría: {val.Categoria_ID}</h4>
+                                                        <h4>Creador: {val.UsuarioCreador_ID}</h4>
+                                                    </div>
+                                                    <div className="group-image">
+                                                        <img src={'data:image/jpeg;base64,'+val.Foto} alt="Foto de perfil" />
+                                                    
+                                                    </div>
+                                                    <div className="group-description">
+                                                        <span>Descripción:</span>
+                                                        <h3>{val.Descripción}</h3>
+                                                    </div>
+                                                    <div className="group-buttons">
+                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Ver Solicitudes</button>
+                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Editar</button>
+                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
+                                                        <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
+
                                     <textarea rows="2" placeholder="¿Qué estás pensando, @Usuario?"></textarea>
                                     <button className="btn btn-accent" onClick={agregarPublicacion}>Agregar Publicación</button>
                                     <div className="attachment-icons">
