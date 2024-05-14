@@ -135,37 +135,25 @@ function Perfil() {
                      <h3  className="mt-3">Grupos</h3>
                </main>
                    
-                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
-                   
-                        
-                        { //ID, Nombre, Categoria_ID, UsuarioCreador_ID, Descripción, Fecha_de_creación, Foto, Estado
-                            otrosDatos.map((val,key)=>{
-                                return(
-                                    <>
-                                    
-                                    <div className="card mt-4"  key={key}>
+               <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
+                    {otrosDatos.map((val, key) => {
+                        return (
+                            <div className="card-container" key={key}>
+                                <div className="card mt-4">
                                     <Link to={`/Grupo?id=${val.ID}`} className="card-link">
-                                    <img src={'data:image/jpeg;base64,'+val.Foto} 
-                                    className="card-img-top" alt={val.Nombre} />
-
+                                        <img src={'data:image/jpeg;base64,' + val.Foto} className="card-img-top" alt={val.Nombre} />
                                         <div className="card-body">
                                             <span className="navbar-text">{val.Fecha_de_creación}</span>
-                                                <h5 className="card-title">{val.Nombre}</h5>
-                                                <p className="card-text">{val.Descripción}</p>
+                                            <h5 className="card-title">{val.Nombre}</h5>
+                                            <p className="card-text">{val.Descripción}</p>
                                         </div>
-                                        </Link>
-                                    </div>
-                                  
-                                    </>
-                                )
-                            })
-                        }
-                        {/*
-                            <img src={'data:image/jpeg;base64,'+val.base64}  className="card-img-top" alt="..." />
-                    */}
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </main>
 
-
-                    </main>
                 </div>
             </div>
         </>

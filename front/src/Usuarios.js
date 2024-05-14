@@ -99,6 +99,8 @@ useEffect(()=>{
                                 <p className="card-text">Descripción de la publicación. Aquí puedes escribir más detalles sobre la publicación.</p>
                             </div>
                         </div>
+
+                        
                     </main>
                 </div>
             </div>
