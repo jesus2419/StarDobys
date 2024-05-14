@@ -36,7 +36,7 @@ INSERT INTO Categoria (Nombre, Estado) VALUES ('Corridos tumbados', true);
 
 
 
-select * from Categoria;
+select * from usuarios;
 
 
 CREATE TABLE Grupo (
@@ -53,6 +53,8 @@ CREATE TABLE Grupo (
 );
 
 
+
+
 CREATE TABLE Miembros_grupo (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     Grupo_ID INT,
@@ -60,7 +62,7 @@ CREATE TABLE Miembros_grupo (
     Fecha_agregado DATETIME,
     Estado BOOLEAN,
     FOREIGN KEY (Grupo_ID) REFERENCES Grupo(ID),
-    FOREIGN KEY (Usuario_ID) REFERENCES Usuario(ID)
+    FOREIGN KEY (Usuario_ID) REFERENCES Usuarios(ID)
 );
 
 

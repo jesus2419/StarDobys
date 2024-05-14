@@ -117,9 +117,21 @@ function Grupo() {
                                             return(
                                                 <div key={key} className="group-container">
                                                     <div className="group-info">
-                                                        <h1>{val.Nombre}</h1>
-                                                        <h4>Categoría: {val.Categoria_ID}</h4>
-                                                        <h4>Creador: {val.UsuarioCreador_ID}</h4>
+                                                        <h1>{val.NombreGrupo}</h1>
+                                                        <h4>Categoría: {val.NombreCategoria}</h4>
+                                                        
+
+                                                        <div className="card-header">
+                                                        
+                                                            <div className="card-ico">
+                                                                <img className="card-ico-img" src={'data:image/jpeg;base64,'+val.Fotousuario} alt="Icono de perfil" />
+                                                            </div>
+                                                            <div className="card-username">
+                                                            @{val.NombreUsuarioCreador}
+                                                            </div>
+                                                        </div>
+
+                                                       
                                                     </div>
                                                     <div className="group-image">
                                                         <img src={'data:image/jpeg;base64,'+val.Foto} alt="Foto de perfil" />

@@ -221,7 +221,8 @@ app.post("/creargrupo", upload.single('file'), (req, resp) => {
         const nombre = req.body.Nomb;
 
         // Ejecutar el procedimiento almacenado InsertarGrupo
-        db.query("CALL InsertarGrupo(?, ?, ?, ?, ?)", [nombre, categoria, usuarioID, descripcion, imagenB64], (err, data) => {
+        db.query("CALL CrearGrupoYAgregarMiembro(?, ?, ?, ?, ?)", [nombre, categoria, usuarioID, descripcion, imagenB64], (err, data) => {
+
             if (err) {
                 console.error("Error al crear el grupo:", err);
                 resp.json('Error');
@@ -287,7 +288,26 @@ app.post("/grupopag", upload.single('file'), (req, resp) => {
 
        
        
-        db.query("SELECT * FROM grupo WHERE ID = ?", [id_grupo], (err, data) => {
+    db.query(`
+    SELECT 
+        Grupo.ID,
+        Grupo.Nombre AS NombreGrupo,
+        Categoria.Nombre AS NombreCategoria,
+        Usuarios.nomU AS NombreUsuarioCreador,
+        Usuarios.base64 AS Fotousuario,
+        Grupo.Descripción,
+        Grupo.Fecha_de_creación,
+        Grupo.Foto,
+        Grupo.Estado
+    FROM 
+        Grupo
+    JOIN
+        Categoria ON Grupo.Categoria_ID = Categoria.ID
+    JOIN
+        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID
+    WHERE
+        Grupo.ID = ?;
+`, [id_grupo], (err, data) => {
             if(err){
                 resp.send(err);
             }else{
