@@ -309,6 +309,52 @@ app.post("/unirgrupo", upload.single('file'), (req, resp) => {
 
 
 
+
+app.post("/publicar", upload.fields([
+    { name: 'foto', maxCount: 1 },
+    { name: 'video', maxCount: 1 },
+    { name: 'audio', maxCount: 1 }
+]), (req, resp) => {
+    console.log("Datos recibidos del cliente publicacion:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+    const contenido = req.body.contenido;
+
+    const foto = req.files['foto'] ? req.files['foto'][0].buffer.toString('base64') : null;
+    const video = req.files['video'] ? req.files['video'][0].buffer.toString('base64') : null;
+    const audio = req.files['audio'] ? req.files['audio'][0].buffer.toString('base64') : null;
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+       
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL InsertarPublicacion(?, ?, ?, ?, ?, ?)",
+        [usuarioID, id, contenido, foto, video, audio], (err, data) => {
+
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    });
+});
+
+
+
 app.post("/banusergrupo", upload.single('file'), (req, resp) => {
     console.log("Datos recibidos del cliente2222:");
     const sesion = req.query.sesion;
@@ -343,6 +389,75 @@ app.post("/banusergrupo", upload.single('file'), (req, resp) => {
 });
 
 
+
+
+app.post("/comentarpublicacion", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente2222:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+    const contenido = req.body.contenido;
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+       
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL InsertarComentario(?, ?, ?)", [id, usuarioID, contenido], (err, result) => {
+
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    });
+});
+
+
+app.post("/mostrarcomentario",
+(req, resp)=>{
+    const sesion = req.query.id_publicacion;
+    db.query(`
+    
+SELECT
+c.ID AS Comentario_ID,
+c.ID_publicacion,
+u.nomU AS Nombre_Usuario,
+u.base64 AS Usuario_Base64,
+c.Contenido,
+c.Fecha_de_creación,
+c.Estado
+FROM
+Comentario c
+LEFT JOIN
+Usuarios u ON c.Usuario_ID = u.ID
+WHERE c.ID_publicacion = ? ;
+
+`,[sesion] ,
+    (error, data)=>{
+        if(error){
+            resp.send(error);
+        }else{
+            if(data.length > 0){
+                resp.json(data);
+            }else{
+                resp.json('No comentario');
+            }
+        }
+    })
+})
 
 app.post("/updategrupo", upload.single('file'), (req, resp) => {
     console.log("Datos recibidos del cliente:");
@@ -442,6 +557,57 @@ app.post("/vermiembrosgrupo", upload.single('file'), (req, resp) => {
             Usuarios ON Miembros_grupo.Usuario_ID = Usuarios.ID
         WHERE
             Miembros_grupo.Grupo_ID = ?;
+    `, [grupoID], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    
+});
+
+app.post("/verpublicaciones", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const grupoID = req.query.nomb;
+    console.log("grupo:", grupoID);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query(`
+        SELECT
+    p.ID AS Publicacion_ID,
+    u.nomU AS Nombre_Usuario,
+    u.base64 AS Base64_Usuario,
+    p.Grupo_ID,
+    p.Contenido,
+    p.Fecha_de_creación,
+    p.Estado,
+    f.Archivo AS Foto,
+    v.Archivo AS Video,
+    a.Archivo AS Audio
+FROM
+    Publicacion p
+LEFT JOIN
+    Usuarios u ON p.Usuario_ID = u.ID
+LEFT JOIN
+    Foto_p f ON p.ID = f.ID_publicacion
+LEFT JOIN
+    Video_p v ON p.ID = v.ID_publicacion
+LEFT JOIN
+    Audio_p a ON p.ID = a.ID_publicacion
+
+    
+        WHERE p.Grupo_ID = ?;
     `, [grupoID], (err, data) => {
             if(err){
                 resp.send(err);

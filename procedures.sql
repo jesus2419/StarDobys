@@ -89,6 +89,57 @@ END //
 
 DELIMITER ;
 
+
+
+DELIMITER //
+CREATE PROCEDURE InsertarPublicacion(
+    IN p_UsuarioID INT,
+    IN p_GrupoID INT,
+    IN p_Contenido VARCHAR(255),
+    IN p_Foto LONGTEXT,
+    IN p_Video LONGTEXT,
+    IN p_Audio LONGTEXT
+)
+BEGIN
+    DECLARE v_PublicacionID INT;
+
+    -- Insertar en la tabla de Publicacion
+    INSERT INTO Publicacion (Usuario_ID, Grupo_ID, Contenido, Fecha_de_creación, Estado)
+    VALUES (p_UsuarioID, p_GrupoID, p_Contenido, NOW(), TRUE);
+    
+    -- Obtener el ID de la publicación insertada
+    SET v_PublicacionID = LAST_INSERT_ID();
+
+    -- Insertar en la tabla de Foto_p si se proporciona una foto
+    IF p_Foto IS NOT NULL THEN
+        INSERT INTO Foto_p (ID_publicacion, Archivo, Estado)
+        VALUES (v_PublicacionID, p_Foto, TRUE);
+    END IF;
+
+    -- Insertar en la tabla de Video_p si se proporciona un video
+    IF p_Video IS NOT NULL THEN
+        INSERT INTO Video_p (ID_publicacion, Archivo, Estado)
+        VALUES (v_PublicacionID, p_Video, TRUE);
+    END IF;
+
+    -- Insertar en la tabla de Audio_p si se proporciona un audio
+    IF p_Audio IS NOT NULL THEN
+        INSERT INTO Audio_p (ID_publicacion, Archivo, Estado)
+        VALUES (v_PublicacionID, p_Audio, TRUE);
+    END IF;
+    
+END //
+DELIMITER ;
+CALL InsertarPublicacion(
+    40,
+    4,
+    'valor_p_Contenido',
+    'valor_p_Foto',
+    'valor_p_Video',
+    'valor_p_Audio'
+);
+
+
  SELECT 
         Grupo.ID,
         Grupo.Categoria_ID,

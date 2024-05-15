@@ -73,14 +73,13 @@ CREATE TABLE Publicacion (
     Contenido VARCHAR(255),
     Fecha_de_creación DATETIME,
     Estado BOOLEAN,
-    FOREIGN KEY (Usuario_ID) REFERENCES Usuario(ID),
+    FOREIGN KEY (Usuario_ID) REFERENCES Usuarios(ID),
     FOREIGN KEY (Grupo_ID) REFERENCES Grupo(ID)
 );
 
 CREATE TABLE Foto_p (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     ID_publicacion INT,
-    Nombre_archivo VARCHAR(50),
     Archivo LONGTEXT,
     Estado BOOLEAN,
     FOREIGN KEY (ID_publicacion) REFERENCES Publicacion(ID)
@@ -90,7 +89,6 @@ CREATE TABLE Foto_p (
 CREATE TABLE Video_p (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     ID_publicacion INT,
-    Nombre_archivo VARCHAR(50),
     Archivo LONGTEXT,
     Estado BOOLEAN,
     FOREIGN KEY (ID_publicacion) REFERENCES Publicacion(ID)
@@ -101,7 +99,6 @@ CREATE TABLE Video_p (
 CREATE TABLE Audio_p (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     ID_publicacion INT,
-    Nombre_archivo VARCHAR(50),
     Archivo LONGTEXT,
     Estado BOOLEAN,
     FOREIGN KEY (ID_publicacion) REFERENCES Publicacion(ID)
