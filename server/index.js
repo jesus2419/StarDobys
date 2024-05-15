@@ -529,6 +529,62 @@ app.post("/vergrupo", upload.single('file'), (req, resp) => {
 });
 
 
+
+app.post("/misgrupos", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const nomb = req.query.nomb;
+    console.log("Usuario:", nomb);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [nomb], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+
+        console.log("Usuario:", usuarioID);
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query(`
+        
+SELECT
+mg.ID AS Miembro_ID,
+g.Nombre AS Nombre_Grupo,
+g.Descripción AS decripcion,
+g.Fecha_de_creación AS fecha,
+g.Foto AS foto,
+u.ID AS id_usuario,
+g.UsuarioCreador_ID,
+g.ID
+
+FROM
+Miembros_grupo mg
+LEFT JOIN
+Grupo g ON mg.Grupo_ID = g.ID
+LEFT JOIN
+Usuarios u ON mg.Usuario_ID = u.ID
+where u.ID = ?;
+    `, [usuarioID], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    });
+});
+
 app.post("/vermiembrosgrupo", upload.single('file'), (req, resp) => {
     console.log("Datos recibidos del cliente:");
     const grupoID = req.query.nomb;

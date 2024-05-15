@@ -22,6 +22,8 @@ function Perfil() {
     const[allImg, setAllmg] = useState([]);
     const [otrosDatos, setOtrosDatos] = useState([]);
 
+    const [misgrupos, setmisgrupos] = useState([]);
+
 
 
     useEffect(() => {
@@ -43,6 +45,16 @@ function Perfil() {
                     alert("No hay grupo en el usuario");
                 } else {
                     setOtrosDatos(otraRespuesta.data);
+                }
+
+
+                const grupos = await Axios.post(`http://localhost:3001/misgrupos?nomb=${encodeURIComponent(sesion)}`);
+                // Verificar si los datos están presentes en otraRespuesta
+
+                if (grupos.data === "No grupo") {
+                    alert("No hay grupo en el usuario");
+                } else {
+                    setmisgrupos(grupos.data);
                 }
                 
             } catch (error) {
@@ -153,6 +165,32 @@ function Perfil() {
                         )
                     })}
                 </main>
+
+                <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
+                   
+                     <h3  className="mt-3">Grupos donde eres miembro</h3>
+               </main>
+                   
+               <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
+                    {//Miembro_ID, Nombre_Grupo, decripcion, fecha, foto, id_usuario, UsuarioCreador_ID, ID
+                    misgrupos.map((val, key) => {
+                        return (
+                            <div className="card-container" key={key}>
+                                <div className="card mt-4">
+                                    <Link to={`/Grupo?id=${val.ID}`} className="card-link">
+                                        <img src={'data:image/jpeg;base64,' + val.foto} className="card-img-top" alt={val.Nombre} />
+                                        <div className="card-body">
+                                            <span className="navbar-text">{val.fecha}</span>
+                                            <h5 className="card-title">{val.Nombre_Grupo}</h5>
+                                            <p className="card-text">{val.decripcion}</p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </main>
+
 
                 </div>
             </div>
