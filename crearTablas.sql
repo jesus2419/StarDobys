@@ -7,15 +7,17 @@ CREATE TABLE Rol (
 );
 
 
+select * from usuarios;
+-- id, nomU, emU, passwU, nomCompleto, rol, fecha_creacion, estado, base64
 CREATE TABLE Usuarios (
     ID INT PRIMARY KEY AUTO_INCREMENT,
-    RolID INT,
-    Nombre VARCHAR(50),
-    Apellidos VARCHAR(50),
-    Correo VARCHAR(50),
-    Contraseña VARCHAR(15),
+    rol INT,
+    nomU VARCHAR(50),
+    nomCompleto VARCHAR(50),
+    emU VARCHAR(50),
+    passwU VARCHAR(15),
     Fecha_de_creación DATETIME,
-    Foto LONGTEXT,
+    base64 LONGTEXT,
     Estado BOOLEAN,
     FOREIGN KEY (RolID) REFERENCES Rol(ID)
 );
@@ -35,8 +37,6 @@ INSERT INTO Categoria (Nombre, Estado) VALUES ('Electrónica', true);
 INSERT INTO Categoria (Nombre, Estado) VALUES ('Corridos tumbados', true);
 
 
-
-select * from usuarios;
 
 
 CREATE TABLE Grupo (

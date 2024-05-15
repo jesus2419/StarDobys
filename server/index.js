@@ -274,6 +274,76 @@ app.post("/creargrupo", upload.single('file'), (req, resp) => {
 
 
 
+app.post("/unirgrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente2222:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+       
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL InsertarMiembroGrupo(?, ?)", [id, usuarioID], (err, data) => {
+
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    });
+});
+
+
+
+app.post("/banusergrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente2222:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+       
+
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query("CALL EliminarMiembroGrupo(?, ?)", [id, usuarioID], (err, result) => {
+
+            if (err) {
+                console.error("Error al crear el grupo:", err);
+                resp.json('Error');
+            } else {
+                console.log("Grupo creado exitosamente");
+                resp.json('Success');
+            }
+        });
+    });
+});
+
+
+
 app.post("/updategrupo", upload.single('file'), (req, resp) => {
     console.log("Datos recibidos del cliente:");
     const id = req.query.nomb;
@@ -343,6 +413,105 @@ app.post("/vergrupo", upload.single('file'), (req, resp) => {
     });
 });
 
+
+app.post("/vermiembrosgrupo", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const grupoID = req.query.nomb;
+    console.log("grupo:", grupoID);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query(`
+        SELECT 
+            Miembros_grupo.ID AS MiembroID,
+            Miembros_grupo.Grupo_ID,
+            Miembros_grupo.Usuario_ID,
+            Miembros_grupo.Fecha_agregado,
+            Miembros_grupo.Estado AS MiembroEstado,
+            Usuarios.nomU AS NombreUsuario,
+            Usuarios.base64 AS Base64Usuario,
+            Usuarios.Estado AS UsuarioEstado
+        FROM 
+            Miembros_grupo
+        JOIN
+            Usuarios ON Miembros_grupo.Usuario_ID = Usuarios.ID
+        WHERE
+            Miembros_grupo.Grupo_ID = ?;
+    `, [grupoID], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    
+});
+
+
+app.post("/esmiembro", upload.single('file'), (req, resp) => {
+    console.log("Datos recibidos del cliente:");
+    const sesion = req.query.sesion;
+    const id = req.query.id;
+    console.log("Sesion:", sesion);
+    console.log("ID:", id);
+    db.query("SELECT ID FROM usuarios WHERE nomU = ?", [sesion], (err, usuarioData) => {
+        if (err || !usuarioData || usuarioData.length === 0) {
+            console.error("Error al obtener el ID del usuario:", err);
+            resp.status(500).json({ "alert": 'Error' });
+            return;
+        }
+
+        const usuarioID = usuarioData[0].ID;
+
+
+        console.log("Usuario:", usuarioID);
+
+    // Obtener el ID del usuario basado en el nombre de usuario recibido
+    
+
+
+        // Convertir la imagen a base64
+       
+        // Ejecutar el procedimiento almacenado InsertarGrupo
+        db.query(`
+        SELECT 
+            Miembros_grupo.ID AS MiembroID,
+            Miembros_grupo.Grupo_ID,
+            Miembros_grupo.Usuario_ID,
+            Miembros_grupo.Fecha_agregado,
+            Miembros_grupo.Estado AS MiembroEstado,
+            Usuarios.nomU AS NombreUsuario,
+            Usuarios.base64 AS Base64Usuario,
+            Usuarios.Estado AS UsuarioEstado
+        FROM 
+            Miembros_grupo
+        JOIN
+            Usuarios ON Miembros_grupo.Usuario_ID = Usuarios.ID
+        WHERE
+            Miembros_grupo.Grupo_ID = ? AND Miembros_grupo.Usuario_ID = ? ;
+    `, [id,usuarioID], (err, data) => {
+            if(err){
+                resp.send(err);
+            }else{
+                if(data.length > 0){
+                    resp.json(data);
+                }else{
+                    resp.json('No grupo');
+                }
+            }
+        });
+    });
+    
+});
 
 
 app.post("/usuarioadmin", upload.single('file'), (req, resp) => {

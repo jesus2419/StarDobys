@@ -30,6 +30,7 @@ function Grupo() {
 
     const[allImg, setAllmg] = useState([]);
     const [otrosDatos, setOtrosDatos] = useState([]);
+    const [miembross, setmiembro] = useState([]);
 
 
 
@@ -57,6 +58,17 @@ function Grupo() {
                     setOtrosDatos(otraRespuesta.data);
                 }
 
+
+                const miembro = await Axios.post(`http://localhost:3001/esmiembro?sesion=${encodeURIComponent(sesion)}&id=${id}`);
+
+                // Verificar si los datos están presentes en otraRespuesta
+
+                if (miembro.data === "No grupo") {
+                   // alert("No hay grupo en el usuario");
+                } else {
+                    setmiembro(miembro.data);
+                }
+
                 
                 
             } catch (error) {
@@ -69,6 +81,25 @@ function Grupo() {
     }, []); // El segundo parámetro [] asegura que el efecto se ejecute solo una vez al montar el componente
     
 
+    
+const unirse = (e) =>{
+    e.preventDefault();
+
+   
+
+
+    Axios.post(`http://localhost:3001/unirgrupo?sesion=${encodeURIComponent(sesion)}&id=${id}`).then((data)=>{
+
+    if(data.data.alert === "Success"){
+    console.log(data.data);
+    }
+    if(data.data.alert === "Error"){
+    alert("error");
+    }
+    alert("informacion enviada");
+    window.location.href = "/Perfil";
+    })
+}
 
     return (
         <>
@@ -153,17 +184,41 @@ function Grupo() {
                                                                     <Link to={`/ModificarGrupo?id=${id}`}>
                                                                         <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Editar</button>
                                                                     </Link>
+                                                                    <Link to={`/Miembros?id=${id}`}>
                                                                     <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
-                                                                    <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                                                    </Link>
+                                                                   
                                                                 </div>
                                                             ))
                                                         ) : (
                                                             <div >
-                                                                <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
-                                                                <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Unirme</button>
+                                                                <Link to={`/Miembros?id=${id}`}>
+                                                                    <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal">Miembros</button>
+                                                                </Link>
+        
                                                             </div>
                                                         )
+
+                                                        
                                                     }
+
+                                                    {
+                                                    miembross.length > 0 ? (
+                                                    miembross.map((val2,key3)=>{
+                                                        //MiembroID, Grupo_ID, Usuario_ID, Fecha_agregado, MiembroEstado, NombreUsuario, Base64Usuario, UsuarioEstado
+                                                            return(
+                                                                <div key={key3}> 
+                                                                {val2.NombreUsuario === sesion ? (
+                                                                    null
+                                                                ) : null}
+                                                            </div>
+                                                        )})
+                                                    ) : (
+                                                        <div >
+                                                            <button type="button" className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#solicitudesModal" onClick={unirse}>Unirme</button>
+                                                        </div>
+                                                    )
+                                                        }
                                                         
                                                     </div> 
                                                 </div>

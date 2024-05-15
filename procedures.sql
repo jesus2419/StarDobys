@@ -39,6 +39,56 @@ END //
 
 DELIMITER ;
 
+
+DELIMITER //
+
+CREATE PROCEDURE UpdateGrupo(
+    IN p_grupoID INT,
+    IN p_nombre VARCHAR(50),
+    IN p_categoriaID INT,
+    IN p_descripcion VARCHAR(150),
+    IN p_foto LONGTEXT
+)
+BEGIN
+    UPDATE Grupo
+    SET 
+        Nombre = p_nombre,
+        Categoria_ID = p_categoriaID,
+        Descripción = p_descripcion,
+        Foto = p_foto
+    WHERE ID = p_grupoID;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE InsertarMiembroGrupo(
+    IN p_Grupo_ID INT,
+    IN p_Usuario_ID INT
+)
+BEGIN
+    INSERT INTO Miembros_grupo (Grupo_ID, Usuario_ID, Fecha_agregado, Estado)
+    VALUES (p_Grupo_ID, p_Usuario_ID, NOW(), TRUE);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE EliminarMiembroGrupo(
+    IN p_Grupo_ID INT,
+    IN p_Usuario_ID INT
+)
+BEGIN
+    DELETE FROM Miembros_grupo 
+    WHERE Grupo_ID = p_Grupo_ID AND Usuario_ID = p_Usuario_ID;
+END //
+
+DELIMITER ;
+
  SELECT 
         Grupo.ID,
         Grupo.Categoria_ID,
@@ -55,5 +105,20 @@ DELIMITER ;
     JOIN
         Categoria ON Grupo.Categoria_ID = Categoria.ID
     JOIN
-        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID
+        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID;
+
+
+SELECT 
+    Miembros_grupo.ID AS MiembroID,
+    Miembros_grupo.Grupo_ID,
+    Miembros_grupo.Usuario_ID,
+    Miembros_grupo.Fecha_agregado,
+    Miembros_grupo.Estado AS MiembroEstado,
+    Usuarios.nomU AS NombreUsuario,
+    Usuarios.base64 AS Base64Usuario,
+    Usuarios.Estado AS UsuarioEstado
+FROM 
+    Miembros_grupo
+JOIN
+    Usuarios ON Miembros_grupo.Usuario_ID = Usuarios.ID;
 
