@@ -109,6 +109,8 @@ app.post("/login",
 
 //--------------------------------------------------
 
+
+
 const fileFil = (req, file, cb) => {
     // reject a file
     if (file.mimetype === 'image/png') {
@@ -123,7 +125,7 @@ const fileFil = (req, file, cb) => {
 const strg = multer.memoryStorage();
 const upload = multer({
                     storage:strg,
-                    fileFilter: fileFil
+                    //fileFilter: fileFil
                 })
 
 app.post("/file", upload.single('file'),
@@ -141,6 +143,35 @@ app.post("/file", upload.single('file'),
         if(err){
             resp.json({
                 "alert": 'Error'
+            })
+        }else{
+            resp.json({
+                "alert": 'Success' 
+            })
+        }
+    })
+    console.log(imagenB64, usName );
+})
+
+
+
+app.post("/audio", upload.single('file'),
+(req, resp)=>{
+    console.log("Datos recibidos del audio");
+    //console.log("Usuario:", req.body.user);
+    //console.log("audio:", req.file);
+
+    const imagenB64 = req.file.buffer.toString('base64');
+    const usName = req.body.user;
+
+    db. query("INSERT INTO audio(user, base64) VALUES(?,?)",
+    [usName, imagenB64],
+    (err, data)=>{
+        if(err){
+            console.log(err);
+            resp.json({
+                "alert": 'Error'
+                
             })
         }else{
             resp.json({
@@ -202,6 +233,24 @@ app.get("/getAllImg",
         }
     })
 })
+
+
+app.get("/getAllaudio",
+(req, resp)=>{
+    db.query("SELECT * FROM audio",
+    (error, data)=>{
+        if(error){
+            resp.send(error);
+        }else{
+            if(data.length > 0){
+                resp.json(data);
+            }else{
+                resp.json('No imagen');
+            }
+        }
+    })
+})
+
 
 //--------
 app.post("/usuario", upload.single('file'),
