@@ -10,6 +10,7 @@ import jazzIcon from './assets/img/jazz.png';
 import electronicaIcon from './assets/img/dj.png';
 import perfilIcon from './assets/img/grupo.png';
 import { useLocation } from 'react-router-dom';
+import Nav from './Nav'
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -133,34 +134,7 @@ function mostrarImagen(event) {
                 <div className="row">
                     {/* Barra lateral */}
                     <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light">
-                        <div className="position-sticky">
-                            {/* Imagen en la parte superior de la barra lateral */}
-                            <img src={startLogo} alt="Start Logo" className="img-fluid p-3" />
-
-                            {/* Íconos en la barra lateral */}
-                            <div className="list-group mt-3">
-                                <button type="button" className="list-group-item list-group-item-action">
-                                    <img src={rockIcon} alt="Rock" className="icon" />
-                                    Rock
-                                </button>
-                                <button type="button" className="list-group-item list-group-item-action">
-                                    <img src={kpopIcon} alt="Kpop" className="icon" />
-                                    Kpop
-                                </button>
-                                <button type="button" className="list-group-item list-group-item-action">
-                                    <img src={jazzIcon} alt="Jazz" className="icon" />
-                                    Jazz
-                                </button>
-                                <button type="button" className="list-group-item list-group-item-action">
-                                    <img src={electronicaIcon} alt="Electrónica" className="icon" />
-                                    Electrónica
-                                </button>
-                                <Link to="/Perfil"  className="list-group-item list-group-item-action">
-                                    <img src={perfilIcon} alt="Perfil" className="icon" />
-                                    Perfil
-                                </Link>
-                            </div>
-                        </div>
+                    <Nav></Nav>
                     </nav>
                     {/* Contenido principal */}
                     

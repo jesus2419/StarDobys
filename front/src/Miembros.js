@@ -10,6 +10,7 @@ import electronicaIcon from './assets/img/dj.png';
 import perfilIcon from './assets/img/grupo.png';
 import agregarGrupoIcon from './assets/img/mas.png';
 import kpopGroupIcon from './assets/img/kpop-icon.png';
+import Nav from './Nav'
 
 import { useLocation } from 'react-router-dom';
 import './Grupo.css';  // Importar el archivo CSS personalizado
@@ -210,46 +211,7 @@ function Miembros() {
 
             <div className="d-flex">
                 <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light">
-                    <div className="position-sticky">
-                        <div className="logo-container">
-                            <img className="logo-menu" src="./assets/img/start_loog.png" alt="Logo" />
-                        </div>
-
-                        <div className="menu-container mt-2">
-                            <button className="menu-section" onClick={() => mostrarSubsecciones('rock')}>
-                                <img src={rockIcon} alt="Icono de Rock" />
-                                <span>Rock</span>
-                            </button>
-                            <button className="menu-section" onClick={() => mostrarSubsecciones('kpop')}>
-                                <img src={kpopIcon} alt="Icono de Kpop" />
-                                <span>Kpop</span>
-                            </button>
-                            <button className="menu-section" onClick={() => mostrarSubsecciones('jazz')}>
-                                <img src={jazzIcon} alt="Icono de Jazz" />
-                                <span>Jazz</span>
-                            </button>
-                            <button className="menu-section" onClick={() => mostrarSubsecciones('electronica')}>
-                                <img src={electronicaIcon} alt="Icono de Electronica" />
-                                <span>Electronica</span>
-                            </button>
-                            <button className="menu-section" onClick={() => window.location.href = 'VistAperfil.html'}>
-                                <img src={perfilIcon} alt="Icono de Perfil" />
-                                <span>Perfil</span>
-                            </button>
-                            <button className="menu-section" onClick={() => window.location.href = 'AgregarGrupo.html'}>
-                                <img src={agregarGrupoIcon} alt="Icono de Agregar Grupo" />
-                                <span>Agregar Grupo</span>
-                            </button>
-                        </div>
-
-                        {/* Modal para subsecciones */}
-                        <div className="modal" id="subseccionesModal">
-                            <div className="modal-content">
-                                <span className="close" onClick={cerrarModal}>&times;</span>
-                                <div dangerouslySetInnerHTML={{ __html: subseccionesContenido }}></div>
-                            </div>
-                        </div>
-                    </div>
+                <Nav></Nav>
                 </nav>
 
                 <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">

@@ -15,6 +15,7 @@ import videoIcon from './assets/img/video.png';
 import musicIcon from './assets/img/music.png';
 import imagenIcon from './assets/img/imagen.png';
 import { useLocation } from 'react-router-dom';
+import Nav from './Nav'
 import './Grupo.css';  // Importar el archivo CSS personalizado
 import Comentarios from './Comentarios'; // Importa el componente de comentarios
 
@@ -98,6 +99,8 @@ function Grupo() {
                 }
 
                 
+
+                
                 
             } catch (error) {
                 console.error("Error al realizar la solicitud:", error);
@@ -120,12 +123,14 @@ const unirse = (e) =>{
 
     if(data.data.alert === "Success"){
     console.log(data.data);
+    window.location.href = "/Grupo?id=${val.ID}`";
     }
     if(data.data.alert === "Error"){
     alert("error");
     }
     alert("informacion enviada");
-    window.location.href = "/Perfil";
+    window.location.href = "/Grupo?id=${val.ID}`";
+   
     })
 }
 
@@ -160,10 +165,12 @@ const crear_publicacion = (e) => {
     ).then((data) => {
         if (data.data.alert === "Success") {
             console.log(data.data);
+            window.location.href = "/Grupo?id=${val.ID}`";
         }
         if (data.data.alert === "Error") {
             alert("error");
         }
+        window.location.href = `/Grupo?id=${id}`;
 
     }).catch((error) => {
         console.log(error);
@@ -192,7 +199,7 @@ const comentar = ( ID_publicacion) => {
     alert("error");
     }
     alert("informacion de comentario enviada ");
-    //window.location.href = "/Grupo";
+    window.location.href = "/Grupo?id=${val.ID}`";
     })
 
     }
@@ -204,35 +211,7 @@ const comentar = ( ID_publicacion) => {
             <Header /> {/* Añadir el componente Header */}
             <div className="d-flex">
                 <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light">
-                    <div className="position-sticky">
-                        <img src={startLogo} alt="Start Logo" className="img-fluid p-3" />
-                        <div className="list-group mt-3">
-                            <button type="button" className="list-group-item list-group-item-action">
-                                <img src={rockIcon} alt="Rock" className="icon" />
-                                Rock
-                            </button>
-                            <button type="button" className="list-group-item list-group-item-action">
-                                <img src={kpopIcon} alt="Kpop" className="icon" />
-                                Kpop
-                            </button>
-                            <button type="button" className="list-group-item list-group-item-action">
-                                <img src={jazzIcon} alt="Jazz" className="icon" />
-                                Jazz
-                            </button>
-                            <button type="button" className="list-group-item list-group-item-action">
-                                <img src={electronicaIcon} alt="Electrónica" className="icon" />
-                                Electrónica
-                            </button>
-                            <Link to="/Perfil" className="list-group-item list-group-item-action">
-                                <img src={perfilIcon} alt="Perfil" className="icon" />
-                                Perfil
-                            </Link>
-                            <Link to="/AgregarGrupo" className="list-group-item list-group-item-action">
-                                <img src={agregarGrupoIcon} alt="Agregar Grupo" className="icon" />
-                                Agregar Grupo
-                            </Link>
-                        </div>
-                    </div>
+                <Nav></Nav>
                 </nav>
 
                 <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -324,31 +303,52 @@ const comentar = ( ID_publicacion) => {
                                         })}
                                     </div>
 
-                                    <textarea rows="2" placeholder="¿Qué estás pensando, @Usuario?"  onChange={(e)=>{setcontenido(e.target.value)}}></textarea>
-                                    <button className="btn btn-accent" onClick={crear_publicacion}>Agregar Publicación</button>
-                                    <div className="attachment-icons">
-                                        <label htmlFor="file-upload">
-                                            <img src={imagenIcon} alt="Adjuntar foto" />
-                                            <input type="file"  accept="image/png" id="file-upload" onChange={(e)=>{setfotoo(e.target.files[0])}} />
-                                            <span>Foto</span>
 
-                                        </label>
-                                        <label htmlFor="file-upload">
-                                        
 
-                                            <img src={videoIcon} alt="Adjuntar video" /> 
-                                            <input type="file" accept="video/mp4" id="file-upload" onChange={(e)=>{setvideo(e.target.files[0])}} />
-                                            <span>Video</span>
+                                    {
+                                                    miembross.length > 0 ? (
+                                                    miembross.map((val2,key3)=>{
+                                                        //MiembroID, Grupo_ID, Usuario_ID, Fecha_agregado, MiembroEstado, NombreUsuario, Base64Usuario, UsuarioEstado
+                                                            return(
+                                                                <div key={key3}> 
+                                                                {val2.NombreUsuario === sesion ? (
+                                                                    <React.Fragment>
+                                                                    
+                                                                    <textarea style={{ width: '100%' }} rows="2" placeholder="¿Qué estás pensando, @Usuario?"  onChange={(e)=>{setcontenido(e.target.value)}}></textarea>
+                                                                    <button style={{ width: '100%' }} className="btn btn-accent" onClick={crear_publicacion}>Agregar Publicación</button>
+                                                                    <div className="attachment-icons">
+                                                                        <label htmlFor="file-upload">
+                                                                            <img src={imagenIcon} alt="Adjuntar foto" />
+                                                                            <input type="file"  accept="image/png" id="file-upload" onChange={(e)=>{setfotoo(e.target.files[0])}} />
+                                                                            <span>Foto</span>
 
-                                        </label>
-                                        <label htmlFor="file-upload">
-                                            <img src={musicIcon} alt="Adjuntar audio" /> 
-                                            <input type="file" id="file-upload" accept="audio/mp3" onChange={(e)=>{setaudio(e.target.files[0])}} />
-                                            <span>música</span>
-                                        </label>
-                                        
-                                        
-                                    </div>
+                                                                        </label>
+                                                                        <label htmlFor="file-upload">
+                                                                        
+
+                                                                            <img src={videoIcon} alt="Adjuntar video" /> 
+                                                                            <input type="file" accept="video/mp4" id="file-upload" onChange={(e)=>{setvideo(e.target.files[0])}} />
+                                                                            <span>Video</span>
+
+                                                                        </label>
+                                                                        <label htmlFor="file-upload">
+                                                                            <img src={musicIcon} alt="Adjuntar audio" /> 
+                                                                            <input type="file" id="file-upload" accept="audio/mp3" onChange={(e)=>{setaudio(e.target.files[0])}} />
+                                                                            <span>música</span>
+                                                                        </label>
+                                                                        
+                                                                        
+                                                                    </div>
+                                                                    </React.Fragment>
+                                                                
+                                                                ) : null}
+                                                            </div>
+                                                        )})
+                                                    ) : (
+                                                        null
+                                                    )
+                                                        }
+                                    
                                 </div>
                             </div>
 
@@ -376,12 +376,10 @@ const comentar = ( ID_publicacion) => {
                                             </div>
                                         )}
                                         {val.Video && (
-                                            <div className="mock-img d-flex align-items-center justify-content-center">
-                                            <video controls>
+                                            <video controls className="mock-img">
                                                 <source src={'data:video/mp4;base64,' + val.Video} type="video/mp4" />
                                                 Your browser does not support the video tag.
                                             </video>
-                                            </div>
                                         )}
                                         {val.Audio && (
                                             <div className="mock-img d-flex align-items-center justify-content-center">

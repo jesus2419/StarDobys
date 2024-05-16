@@ -123,7 +123,7 @@ const fileFil = (req, file, cb) => {
 const strg = multer.memoryStorage();
 const upload = multer({
                     storage:strg,
-                    fileFilter: fileFil
+                    //fileFilter: fileFil
                 })
 
 app.post("/file", upload.single('file'),
@@ -170,6 +170,41 @@ app.get("/getgrupos",
     JOIN
         Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID;
 `,
+    (error, data)=>{
+        if(error){
+            resp.send(error);
+        }else{
+            if(data.length > 0){
+                resp.json(data);
+            }else{
+                resp.json('No imagen');
+            }
+        }
+    })
+})
+
+
+app.post("/getgruposCategoria",
+(req, resp)=>{
+    const id = req.query.nomb;
+    db.query(`
+    SELECT 
+        Grupo.ID,
+        Grupo.Nombre AS NombreGrupo,
+        Categoria.Nombre AS NombreCategoria,
+        Usuarios.nomU AS NombreUsuarioCreador,
+        Grupo.Descripción,
+        Grupo.Fecha_de_creación,
+        Grupo.Foto,
+        Grupo.Estado
+    FROM 
+        Grupo
+    JOIN
+        Categoria ON Grupo.Categoria_ID = Categoria.ID
+    JOIN
+        Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID
+	WHERE Grupo.Categoria_ID = ?;
+`,[id],
     (error, data)=>{
         if(error){
             resp.send(error);
@@ -235,6 +270,41 @@ app.post("/usuario", upload.single('file'),
     })
     console.log(imagenB64, usName );
 })
+
+
+app.post("/Modificarusuario", upload.single('file'),
+(req, resp)=>{
+    console.log("Datos recibidos del cliente:");
+    
+
+    const imagenB64 = req.file.buffer.toString('base64');
+    //const usName = req.body.user;
+    const Nomb = req.body.Nomb;
+    const email = req.body.email;
+    const pass = req.body.pass;
+    const name = req.query.nomb;
+
+    
+    
+
+    db.query("CALL ModificarUsuario(?, ?, ?, ?, ?)",
+    [name, email, imagenB64, pass, Nomb],
+    (err, data) => {
+        if(err){
+            console.log(err);
+            resp.json({
+                "alert": 'Error'
+                
+            })
+        }else{
+            resp.json({
+                "alert": 'Success' 
+            })
+        }
+    })
+    //console.log(imagenB64, usName );
+})
+
 
 
 app.post("/creargrupo", upload.single('file'), (req, resp) => {
