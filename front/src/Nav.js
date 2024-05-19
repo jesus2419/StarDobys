@@ -22,37 +22,37 @@ const Nav = () => {
             </Link>
             
             <div className="list-group mt-3">
-                <NavLink to={`/VerGrupos?id=${1}`}>
+                <NavLink to={`/VerGrupos?id=${1}&category=${"Rock"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={rockIcon} alt="Rock" className="icon" />
                     Rock
                 </button>
                 </NavLink>
-                <NavLink to={`/VerGrupos?id=${2}`}>
+                <NavLink to={`/VerGrupos?id=${2}&category=${"Kpop"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={kpopIcon} alt="Kpop" className="icon" />
                     Kpop
                 </button>
                 </NavLink>
-                <NavLink to={`/VerGrupos?id=${3}`}>
+                <NavLink to={`/VerGrupos?id=${3}&category=${"Jazz"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={jazzIcon} alt="Jazz" className="icon" />
                     Jazz
                 </button>
                 </NavLink>
-                <NavLink to={`/VerGrupos?id=${4}`}>
+                <NavLink to={`/VerGrupos?id=${4}&category=${"Electrónica"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={electronicaIcon} alt="Electrónica" className="icon" />
                     Electrónica
                 </button>
                 </NavLink>
-                <NavLink to={`/VerGrupos?id=${5}`}>
+                <NavLink to={`/VerGrupos?id=${5}&category=${"Corridos tumbados"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={tumbadoicon} alt="Corridos tumbados " className="icon" />
                     Corridos tumbados
                 </button>
                 </NavLink>
-                <NavLink to={`/VerGrupos?id=${6}`}>
+                <NavLink to={`/VerGrupos?id=${6}&category=${"Pop"}`}>
                 <button type="button" className="list-group-item list-group-item-action">
                     <img src={popicon} alt="Pop" className="icon" />
                     Pop

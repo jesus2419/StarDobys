@@ -199,7 +199,7 @@ const comentar = ( ID_publicacion) => {
     alert("error");
     }
     alert("informacion de comentario enviada ");
-    window.location.href = "/Grupo?id=${val.ID}`";
+    window.location.href = `/Grupo?id=${id}`;
     })
 
     }

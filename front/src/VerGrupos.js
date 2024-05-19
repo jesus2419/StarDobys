@@ -32,9 +32,37 @@ function VerGrupos() {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
 
+    const category = searchParams.get('category');
+
     const sesion = JSON.parse(localStorage.getItem('sesion'))
 
     const[allImg, setAllmg] = useState([]);
+
+    function detectar_categoria(id2) {
+        switch(id2) {
+            case 1: 
+                return "Rock";
+            
+            case 2: 
+                return "K-pop";
+            
+            case 3: 
+                return "Jazz";
+            
+            case 4: 
+                return "Electronica";
+            
+            case 5: 
+                return "Corridos tumbados";
+            
+            case 6: 
+                return "Pop";
+            
+            default:
+                return "Categoría no encontrada"; // Manejo de caso por defecto
+        }
+    }
+    
 
 
     
@@ -51,6 +79,8 @@ useEffect(()=>{
         }
     })
 }, [id]);
+
+const categoria = detectar_categoria(id);
     return (
         <>
             <Header />
@@ -65,7 +95,10 @@ useEffect(()=>{
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
 
                     <div className="content">
-                    <h5 className="card-title">Todos los grupos</h5>
+                        {
+                            
+                        }
+                    <h5 className="card-title">Todos los grupos de {category} </h5>
                         {
                         //ID, NombreGrupo, NombreCategoria, NombreUsuarioCreador, Fotousuario, Descripción, Fecha_de_creación, Foto, Estado
                         allImg.map((val,key)=>{
