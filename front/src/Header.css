@@ -1,6 +1,6 @@
-/* Header.css */
+/* Header.css 
 .navbar-text {
-    margin-right: 40px;
+    margin-right: 20px; /* Ajusta según sea necesario 
 }
 
 .form-inline .input-group {
@@ -9,4 +9,12 @@
 
 .input-group-append {
     margin-left: -1px;
-}
+} */
+
+.btn {
+    padding: .55rem 1.5rem .45rem;
+  }
+
+  .bg-custom {
+    background-color: #b215c7 /* Cambia 'your-color' por el color que desees */
+  }

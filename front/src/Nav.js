@@ -11,15 +11,59 @@ import startLogo from './assets/img/start_loog.png';  // Importar la image
 import { Link } from 'react-router-dom';  // Importar Link desde react-router-dom
 import { NavLink } from 'react-router-dom';  // Importar Link desde react-router-dom
 
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
+
 
 const Nav = () => {
+
+    const[allImg, setAllmg] = useState([]);
+    const sesion = JSON.parse(localStorage.getItem('sesion'))
+    
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Primera petición para obtener la imagen del usuario
+                const imagenResponse = await Axios.post(`http://localhost:3001/imagenusuario?nomb=${encodeURIComponent(sesion)}`);
+                if (imagenResponse.data === "No imagen") {
+                    alert("No hay imagen en el usuario");
+                } else {
+                    setAllmg(imagenResponse.data);
+                }
+    
+                
+            } catch (error) {
+                console.error("Error al realizar la solicitud:", error);
+            }
+        };
+    
+        // Llamar a la función fetchData para iniciar las peticiones al montar el componente
+        fetchData();
+    }, []); //
     
     return (
+        
 
         <div className="position-sticky">
-            <Link to="/Home">
-            <img src={startLogo} alt="Start Logo" className="img-fluid p-3" />
-            </Link>
+            {
+                allImg.map((val,key)=>{
+                    return(
+                        <>
+                        <Link to="/Perfil">
+                        <button type="button" className="list-group-item list-group-item-action">
+                        <img src={'data:image/jpeg;base64,'+val.base64} 
+                        alt="Foto de Perfil" className="icon"  />
+                           <a>{val.nomU}</a> 
+                        </button>
+                        </Link>
+                        
+                    
+                        </>
+                    )
+                })
+            }
             
             <div className="list-group mt-3">
                 <NavLink to={`/VerGrupos?id=${1}&category=${"Rock"}`}>

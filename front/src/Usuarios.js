@@ -42,7 +42,7 @@ useEffect(()=>{
             <Header />
             <div className="container-fluid mt-4">
                 <div className="row">
-                    <span className="navbar-text">{sesion}</span>
+                    
                     <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light">
                        <Nav></Nav>
                     </nav>

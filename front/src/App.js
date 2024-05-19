@@ -16,6 +16,8 @@ import ModificarGrupo from './ModificarGrupo';
 import Miembros from './Miembros';
 import Buscar from './Buscar';
 import CargarImagen from './CargarImagen';
+import Header from './Header'; // Importar el Header component
+
 
 
 function App(){
