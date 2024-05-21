@@ -219,6 +219,45 @@ app.post("/getgruposCategoria",
 })
 
 
+// Ruta para buscar grupos por término
+app.get('/buscarGrupos', (req, res) => {
+    const searchTerm = req.query.term; // Término de búsqueda
+
+    const sql = `
+        SELECT 
+            Grupo.ID,
+            Grupo.Nombre AS NombreGrupo,
+            Categoria.Nombre AS NombreCategoria,
+            Usuarios.nomU AS NombreUsuarioCreador,
+            Grupo.Descripción,
+            Grupo.Fecha_de_creación,
+            Grupo.Foto,
+            Grupo.Estado
+        FROM 
+            Grupo
+        JOIN
+            Categoria ON Grupo.Categoria_ID = Categoria.ID
+        JOIN
+            Usuarios ON Grupo.UsuarioCreador_ID = Usuarios.ID
+        WHERE 
+            Grupo.Nombre LIKE ? OR
+            Categoria.Nombre LIKE ? OR
+            Grupo.Descripción LIKE ?
+    `;
+
+    // Usamos '%' + searchTerm + '%' para buscar cualquier coincidencia que contenga el término de búsqueda
+    db.query(sql, [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`], (error, data) => {
+        if (error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            if (data.length > 0) {
+                res.json(data);
+            } else {
+                res.json('No hay datos');
+            }
+        }
+    });
+});
 
 
 

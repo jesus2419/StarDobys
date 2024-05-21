@@ -15,8 +15,6 @@ import Nav from './Nav'
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 
-import Profile from "./UserProfile";
-
 
 function Perfil() {
 
@@ -81,19 +79,41 @@ function Perfil() {
                     {/* Contenido principal */}
                     
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                      
-                      
-                    
                     <h3  className="mt-3">Perfil</h3>
-                        
+                        <div className="container mt-5">
+                            <div className="row justify-content-center">
+                                <div className="col-md-3">
+                                    <div className="card">
+                                        <div className="card-body text-center">
+                                        {
+                                            allImg.map((val,key)=>{
+                                                return(
+                                                    <>
+                                                    <img src={'data:image/jpeg;base64,'+val.base64} 
+                                                    alt="Foto de Perfil" className="img-thumbnail" />
+                                                
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                            {/*<img src="./assets/img/sloth.png" alt="Foto de Perfil" className="img-thumbnail" />*/}
+                                            
+                                            <h3 className="mt-3">@{sesion}</h3>
+                                            <Link to="/ModificarPerfil" className="btn btn-primary btn-block">Configuración</Link>
+                                            <Link to="/Inicio" className="btn btn-danger btn-block">Cerrar Sesión</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
                                
-                                <Profile />
-
-                          
+                                    {/* Aquí va el contenido del perfil */}
+                                </div>
+                            </div>
+                        </div>
 
                     </main>
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex justify-content-center align-items-center">
-                    
+                   
                      <h3  className="mt-3">Grupos creados</h3>
                </main>
                    

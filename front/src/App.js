@@ -16,6 +16,7 @@ import ModificarGrupo from './ModificarGrupo';
 import Miembros from './Miembros';
 import Buscar from './Buscar';
 import CargarImagen from './CargarImagen';
+import Busqueda from './Busqueda'
 import Header from './Header'; // Importar el Header component
 
 
@@ -39,6 +40,10 @@ function App(){
         <Route path='/Miembros' element={<Miembros/>}></Route>
         <Route path='/Buscar' element={<Buscar/>}></Route>
         <Route path='/CargarImagen' element={<CargarImagen/>}></Route>
+        <Route path='/Busqueda' element={<Busqueda/>}></Route>
+
+        
+
 
       </Routes>
     </BrowserRouter>

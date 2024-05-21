@@ -1,5 +1,11 @@
 /* Estilos para la barra lateral y contenido principal de Perfil.js */
 
+
+
+/**/
+
+
+
 #sidebar {
     height: 100vh;  /* Altura completa de la pantalla */
     position: -webkit-sticky; /* Safari */
@@ -30,3 +36,5 @@
     height: 90px;
     margin-right: 20px;
 }
+
+

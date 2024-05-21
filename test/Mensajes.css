@@ -1,0 +1,124 @@
+.chatContainer {
+    display: flex;
+    width: 80%;
+    height: 80vh;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.inbox {
+    width: 30%;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.inbox h2 {
+    text-align: center;
+    background-color: #8a2be2; /* Lila */
+    color: #fff;
+    margin: 0;
+    padding: 15px 0;
+}
+
+.inboxItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.inboxItem:hover {
+    background-color: #f1f1f1;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.inboxInfo {
+    flex: 1;
+}
+
+.inboxInfo h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.inboxInfo p {
+    margin: 0;
+    color: #888;
+}
+
+.chatBox {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.chatHeader {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #8a2be2; /* Lila */
+    color: #fff;
+}
+
+.chatHeader .avatar {
+    margin-right: 10px;
+}
+
+.chatHeader h3 {
+    margin: 0;
+}
+
+.chatMessages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    max-width: 60%;
+}
+
+.sender {
+    background-color: #8a2be2; /* Lila */
+    color: #fff;
+    align-self: flex-end;
+}
+
+.recipient {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+}
+
+.chatInput {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+.chatInput input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-right: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.chatInput button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #8a2be2; /* Lila */
+    color: #fff;
+    cursor: pointer;
+}
+
+.chatInput button:hover {
+    background-color: #6a1cb0; /* Darker Lila */
+}

@@ -1,13 +1,24 @@
-import React from "react";
+//import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from "react-router-dom";
 import './Header.css';  // Importar el archivo CSS personalizado
+import React, { useEffect, useState } from "react";
+import { NavLink } from 'react-router-dom';  // Importar Link desde react-router-dom
+
+
 
 
 import startLogo from './assets/img/start_loog.png';  // Importar la image
 
 function Header() {
     const sesion = JSON.parse(localStorage.getItem('sesion'));
+    const[busqueda, setbusqueda] = useState('');
+
+    const buscar = (e) => {
+      e.preventDefault();
+      
+  }
+  
 
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
@@ -37,7 +48,7 @@ function Header() {
           </a>
           </Link>
         </li>
-        <li class="nav-item text-center mx-2 mx-lg-1">
+        {/*<li class="nav-item text-center mx-2 mx-lg-1">
           <a class="nav-link disabled" aria-disabled="true" href="#">
             <div>
               <i class="far fa-envelope fa-lg mb-1"></i>
@@ -45,7 +56,8 @@ function Header() {
             </div>
             Mensajes
           </a>
-        </li>
+        </li> */}
+        
         
       </ul>
       
@@ -76,10 +88,12 @@ function Header() {
       </ul>
 
       <form class="d-flex input-group w-auto ms-lg-3 my-3 my-lg-0">
-        <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-primary" type="button" data-mdb-ripple-color="dark">
+        <input type="search" class="form-control" placeholder="Search" aria-label="Search" onChange={(e)=>{setbusqueda(e.target.value)}} />
+        <NavLink to={`/Busqueda?buscar=${busqueda}`}>
+        <button class="btn btn-primary" type="button" data-mdb-ripple-color="dark" >
           Search
         </button>
+        </NavLink>
       </form>
 
     </div>
