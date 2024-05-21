@@ -55,8 +55,10 @@ function InicioSesion() {
                     {error && <div className="alert alert-danger">{error}</div>}
                     <button className="btn btn-primary" onClick={log}>Ingresar</button>
                     <Link to="/" className="btn btn-outline-info">Registrarse</Link>
+                    {/*
                     <Link to="/CargarImagen" className="btn btn-outline-info">Test Foto</Link>
-                </div>
+    */}
+                    </div>
             </div>
         </div>
     )

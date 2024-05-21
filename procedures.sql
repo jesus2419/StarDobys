@@ -173,3 +173,22 @@ FROM
 JOIN
     Usuarios ON Miembros_grupo.Usuario_ID = Usuarios.ID;
 
+
+
+SELECT
+    mg.ID AS Miembro_ID,
+    g.Nombre AS Nombre_Grupo,
+    g.Descripción AS decripcion,
+    g.Fecha_de_creación AS fecha,
+	g.Foto AS foto,
+    u.ID AS id_usuario,
+    g.UsuarioCreador_ID,
+    g.ID
+   
+FROM
+    Miembros_grupo mg
+LEFT JOIN
+    Grupo g ON mg.Grupo_ID = g.ID
+LEFT JOIN
+    Usuarios u ON mg.Usuario_ID = u.ID
+    where u.ID = 37;
